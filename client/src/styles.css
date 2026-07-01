@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen bg-slate-50 text-slate-950 antialiased dark:bg-[#070a12] dark:text-white;
+  }
+}
+
+@layer components {
+  .app-bg {
+    background:
+      radial-gradient(circle at 15% 15%, rgba(20, 184, 166, 0.24), transparent 30%),
+      radial-gradient(circle at 85% 0%, rgba(99, 102, 241, 0.2), transparent 34%),
+      radial-gradient(circle at 50% 90%, rgba(244, 114, 182, 0.12), transparent 32%);
+  }
+
+  .glass {
+    @apply border border-white/50 bg-white/70 shadow-glow backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.07];
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:-translate-y-0.5 hover:border-teal-300 hover:text-teal-700 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:border-teal-300/60;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-slate-200 bg-white/80 px-3 py-2.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-teal-400 focus:ring-4 focus:ring-teal-400/15 dark:border-white/10 dark:bg-white/5 dark:text-white;
+  }
+
+  .page {
+    @apply mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8;
+  }
+}
