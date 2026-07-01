@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://campus-booking-app.onrender.com',
+  baseURL: import.meta.env.VITE_API_URL || 'https://campus-booking-app.onrender.com/api',
 });
 
 api.interceptors.request.use((config) => {
@@ -16,7 +16,7 @@ export const getApiErrorMessage = (error, fallback = 'Request failed') => {
   if (error.response?.data?.message) return error.response.data.message;
 
   if (error.code === 'ERR_NETWORK' || error.message === 'Network Error') {
-    return 'Cannot connect to backend at https://campus-booking-app.onrender.com. Please make sure the backend server is running.';
+    return 'Cannot connect to backend at https://campus-booking-app.onrender.com/api. Please make sure the backend server is running.';
   }
 
   if (error.code === 'ECONNABORTED') {
