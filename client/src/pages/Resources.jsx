@@ -20,10 +20,10 @@ const Resources = () => {
 
   return (
     <PageTransition>
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+      <div className="page-heading">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-teal-500">Catalog</p>
-          <h2 className="mt-2 text-3xl font-black">Campus resources</h2>
+          <p className="eyebrow">Catalog</p>
+          <h2 className="display-title mt-2">Campus resources</h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-[1fr_220px]">
           <label className="relative">

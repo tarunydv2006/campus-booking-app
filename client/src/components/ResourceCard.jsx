@@ -11,12 +11,15 @@ const ResourceCard = ({ resource }) => {
       variants={reduceMotion ? undefined : itemVariants}
       whileHover={reduceMotion ? undefined : cardHover}
       transition={quickTransition}
-      className="glass overflow-hidden rounded-lg"
+      className="floating-card overflow-hidden"
     >
-      <img src={resource.image} alt={resource.title} className="h-48 w-full object-cover" />
+      <div className="relative">
+        <img src={resource.image} alt={resource.title} className="h-48 w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 via-transparent to-transparent" />
+      </div>
       <div className="p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <span className="rounded-full bg-teal-500/10 px-3 py-1 text-xs font-bold text-teal-600 dark:text-teal-200">
+          <span className="chip border-cyan-200/80 text-cyan-700 dark:text-cyan-200">
             {resource.category}
           </span>
           {!resource.isActive && <span className="rounded-full bg-rose-500/10 px-3 py-1 text-xs font-bold text-rose-600">Inactive</span>}

@@ -22,11 +22,16 @@ const Notifications = () => {
 
   return (
     <PageTransition>
-      <h2 className="mb-6 text-3xl font-black">Notifications</h2>
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">Inbox</p>
+          <h2 className="display-title mt-2">Notifications</h2>
+        </div>
+      </div>
       {items.length ? (
         <AnimatedList className="space-y-3">
           {items.map((item) => (
-            <motion.div key={item._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className={`glass rounded-lg p-5 ${!item.isRead ? 'ring-2 ring-teal-400/30' : ''}`}>
+            <motion.div key={item._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className={`data-row ${!item.isRead ? 'ring-2 ring-cyan-400/30' : ''}`}>
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex gap-3">
                   <BellRing className="mt-1 h-5 w-5 text-teal-500" />

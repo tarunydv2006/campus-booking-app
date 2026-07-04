@@ -33,9 +33,9 @@ const BookingForm = () => {
 
   return (
     <PageTransition>
-      <form onSubmit={submit} className="glass mx-auto max-w-2xl rounded-lg p-6">
-        <p className="font-bold text-teal-500">{resource?.category}</p>
-        <h2 className="mt-2 text-3xl font-black">Book {resource?.title || 'resource'}</h2>
+      <form onSubmit={submit} className="floating-card mx-auto max-w-2xl p-6">
+        <p className="eyebrow">{resource?.category || 'Booking'}</p>
+        <h2 className="display-title mt-2">Book {resource?.title || 'resource'}</h2>
         <div className="mt-6 space-y-4">
           <label className="block">
             <span className="mb-2 block text-sm font-bold">Start date and time</span>

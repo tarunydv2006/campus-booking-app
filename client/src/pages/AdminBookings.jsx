@@ -24,11 +24,16 @@ const AdminBookings = () => {
 
   return (
     <PageTransition>
-      <h2 className="mb-6 text-3xl font-black">Manage bookings</h2>
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">Admin queue</p>
+          <h2 className="display-title mt-2">Manage bookings</h2>
+        </div>
+      </div>
       {bookings.length ? (
         <AnimatedList className="space-y-3">
           {bookings.map((booking) => (
-            <motion.div key={booking._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="glass rounded-lg p-5">
+            <motion.div key={booking._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="data-row">
               <div className="grid gap-4 lg:grid-cols-[1fr_280px] lg:items-center">
                 <div>
                   <div className="mb-2 flex flex-wrap items-center gap-3">

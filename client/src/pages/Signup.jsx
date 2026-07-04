@@ -23,8 +23,14 @@ const Signup = () => {
 
   return (
     <PageTransition className="app-bg grid min-h-screen place-items-center px-4 dark:text-white">
-      <form onSubmit={submit} className="glass w-full max-w-lg rounded-lg p-8">
-        <h1 className="text-3xl font-black">Create your account</h1>
+      <form onSubmit={submit} className="floating-card w-full max-w-lg p-8">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="icon-tile h-10 w-10 text-xs font-black">CB</span>
+          <div>
+            <p className="eyebrow">Get started</p>
+            <h1 className="text-3xl font-black tracking-tight">Create your account</h1>
+          </div>
+        </div>
         {error && <p className="mt-4 rounded-lg bg-rose-500/10 p-3 text-sm text-rose-500">{error}</p>}
         <div className="mt-6 space-y-4">
           <input className="input" placeholder="Full name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />

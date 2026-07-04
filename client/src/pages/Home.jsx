@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, CalendarCheck, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, CalendarCheck, ChartNoAxesCombined, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -11,21 +11,29 @@ const Home = () => {
   const reduceMotion = useReducedMotion();
 
   return (
-    <main className="app-bg min-h-screen overflow-hidden px-4 py-5 dark:text-white">
+    <main className="app-bg mesh-bg min-h-screen overflow-hidden px-4 py-5 dark:text-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between">
-        <Link to="/" className="text-xl font-black">CampusBook</Link>
+        <Link to="/" className="flex items-center gap-3">
+          <span className="icon-tile h-10 w-10 text-xs font-black">CB</span>
+          <span>
+            <span className="block text-lg font-black tracking-tight">CampusBook</span>
+            <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">Smart Campus OS</span>
+          </span>
+        </Link>
         <div className="flex items-center gap-3">
           <button onClick={toggleTheme} className="btn-secondary">{dark ? 'Light' : 'Dark'}</button>
           <Link to={user ? '/dashboard' : '/login'} className="btn-primary">{user ? 'Dashboard' : 'Login'}</Link>
         </div>
       </nav>
-      <section className="mx-auto grid min-h-[calc(100vh-90px)] max-w-7xl items-center gap-10 py-10 lg:grid-cols-[1fr_0.9fr]">
-        <motion.div initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={quickTransition}>
-          <h1 className="max-w-4xl text-5xl font-black leading-tight sm:text-7xl">
-            Smart Campus Resource Booking System
+
+      <section className="mx-auto grid min-h-[calc(100vh-88px)] max-w-7xl items-center gap-10 py-12 lg:grid-cols-[0.95fr_1.05fr]">
+        <motion.div initial={reduceMotion ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={quickTransition}>
+          <div className="chip mb-5"><Sparkles className="mr-1 h-3.5 w-3.5 text-cyan-500" /> Campus operations, redesigned</div>
+          <h1 className="max-w-4xl text-balance text-5xl font-black tracking-[-0.03em] text-[#101114] dark:text-white sm:text-7xl">
+            Resource booking that feels effortless.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-            Reserve labs, seminar halls, classrooms, projectors, and equipment with role-based approvals, live availability checks, and premium dashboards.
+            Reserve labs, seminar halls, classrooms, projectors, and equipment with a premium dashboard built for fast approvals and confident planning.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to={user ? '/resources' : '/signup'} className="btn-primary">
@@ -33,39 +41,34 @@ const Home = () => {
             </Link>
             <Link to="/login" className="btn-secondary">Explore demo</Link>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          <div className="mt-10 grid gap-3 sm:grid-cols-3">
             {[
-              ['Conflict-safe', ShieldCheck],
-              ['Fast approvals', CalendarCheck],
-              ['SaaS polish', Sparkles]
-            ].map(([label, Icon]) => (
-              <div key={label} className="glass rounded-lg p-4">
-                <Icon className="mb-3 h-6 w-6 text-teal-500" />
-                <p className="font-bold">{label}</p>
+              ['Conflict-safe', ShieldCheck, 'Availability checks before every request.'],
+              ['Approval-ready', CalendarCheck, 'Admin queues stay clean and fast.'],
+              ['Insightful', ChartNoAxesCombined, 'Live stats for users and admins.']
+            ].map(([label, Icon, text]) => (
+              <div key={label} className="surface-card p-4">
+                <Icon className="mb-3 h-5 w-5 text-cyan-500" />
+                <p className="font-black">{label}</p>
+                <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{text}</p>
               </div>
             ))}
           </div>
         </motion.div>
-        <motion.div initial={reduceMotion ? false : { opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={quickTransition} className="relative min-h-[480px]">
-          <div className="absolute inset-8 rotate-3 rounded-[2rem] bg-slate-950 shadow-xl dark:bg-white/10" />
-          <div className="glass absolute inset-0 rounded-[2rem] p-6">
-            <div className="grid h-full grid-rows-[1fr_auto] gap-5">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-200 via-white to-indigo-200 p-6 dark:from-teal-900 dark:via-slate-900 dark:to-indigo-950">
-                <div className="absolute bottom-10 left-12 h-36 w-60 -skew-y-6 rounded-xl bg-white shadow-lg dark:bg-slate-800" />
-                <div className="absolute bottom-24 left-24 h-28 w-44 -skew-y-6 rounded-xl bg-teal-500 shadow-xl" />
-                <div className="absolute bottom-32 right-16 h-48 w-36 -skew-y-6 rounded-xl bg-slate-950 shadow-xl dark:bg-white" />
-                <div className="absolute bottom-16 right-28 h-16 w-16 rounded-full bg-rose-400 shadow-xl" />
-                <div className="absolute left-8 top-8 rounded-xl bg-white/80 p-4 shadow-xl dark:bg-slate-950/80">
-                  <p className="text-xs font-bold uppercase text-teal-500">Live availability</p>
-                  <p className="mt-1 text-2xl font-black">94%</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {['Labs', 'Halls', 'Equipment'].map((item) => (
-                  <div key={item} className="rounded-lg bg-white/70 p-4 text-center font-bold dark:bg-white/10">{item}</div>
-                ))}
-              </div>
-            </div>
+
+        <motion.div initial={reduceMotion ? false : { opacity: 0, scale: 0.98, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={quickTransition} className="relative">
+          <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-cyan-300/25 via-indigo-300/20 to-rose-300/20 blur-2xl" />
+          <div className="floating-card relative overflow-hidden p-3">
+            <img
+              src="/images/campus-hero-dashboard.png"
+              alt="Premium campus operations dashboard illustration"
+              className="aspect-[1.15] w-full rounded-lg object-cover"
+            />
+          </div>
+          <div className="floating-card absolute -bottom-6 left-6 hidden w-56 p-4 sm:block">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-500">Today</p>
+            <p className="mt-1 text-3xl font-black">24</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">active booking requests</p>
           </div>
         </motion.div>
       </section>

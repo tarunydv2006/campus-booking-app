@@ -18,11 +18,16 @@ const MyBookings = () => {
 
   return (
     <PageTransition>
-      <h2 className="mb-6 text-3xl font-black">My booking history</h2>
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">Reservations</p>
+          <h2 className="display-title mt-2">My booking history</h2>
+        </div>
+      </div>
       {bookings.length ? (
         <AnimatedList className="space-y-3">
           {bookings.map((booking) => (
-            <motion.div key={booking._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="glass rounded-lg p-5">
+            <motion.div key={booking._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="data-row">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h3 className="text-lg font-black">{booking.resource?.title}</h3>

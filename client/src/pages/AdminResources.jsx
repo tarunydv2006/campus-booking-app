@@ -48,12 +48,14 @@ const AdminResources = () => {
 
   return (
     <PageTransition>
-      <div className="mb-6">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-teal-500">Admin</p>
-        <h2 className="mt-2 text-3xl font-black">Manage resources</h2>
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">Admin</p>
+          <h2 className="display-title mt-2">Manage resources</h2>
+        </div>
       </div>
       <div className="grid gap-6 xl:grid-cols-[420px_1fr]">
-        <form onSubmit={submit} className="glass rounded-lg p-5">
+        <form onSubmit={submit} className="floating-card p-5">
           <h3 className="mb-4 flex items-center gap-2 text-xl font-black"><Plus className="h-5 w-5" /> {editingId ? 'Edit resource' : 'Add resource'}</h3>
           <div className="space-y-3">
             <input className="input" placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
@@ -69,7 +71,7 @@ const AdminResources = () => {
         </form>
         <AnimatedList className="space-y-3">
           {resources.length ? resources.map((resource) => (
-            <motion.div key={resource._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="glass rounded-lg p-4">
+            <motion.div key={resource._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="data-row">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex gap-4">
                   <img src={resource.image} alt={resource.title} className="h-20 w-24 rounded-lg object-cover" />

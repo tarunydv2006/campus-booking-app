@@ -17,9 +17,12 @@ const Dashboard = () => {
 
   return (
     <PageTransition>
-      <div className="mb-6">
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-teal-500">{user.role} dashboard</p>
-        <h2 className="mt-2 text-3xl font-black">Hello, {user.name}</h2>
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">{user.role} dashboard</p>
+          <h2 className="display-title mt-2">Hello, {user.name}</h2>
+        </div>
+        <span className="chip">Live workspace</span>
       </div>
       <AnimatedList className="grid gap-4 md:grid-cols-4">
         <StatCard icon={ListChecks} label="Total bookings" value={stats.total} />
@@ -27,10 +30,15 @@ const Dashboard = () => {
         <StatCard icon={CalendarCheck} label="Approved" value={stats.approved} accent="text-emerald-500" />
         <StatCard icon={XCircle} label="Rejected" value={stats.rejected} accent="text-rose-500" />
       </AnimatedList>
-      <div className="glass mt-6 rounded-lg p-6">
-        <h3 className="text-xl font-black">Book a campus resource</h3>
-        <p className="mt-2 max-w-2xl text-slate-500 dark:text-slate-400">Browse active resources, select a time slot, and submit an approval request.</p>
+      <div className="floating-card mt-6 overflow-hidden p-6">
+        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="eyebrow">Fast action</p>
+            <h3 className="mt-2 text-2xl font-black tracking-tight">Book a campus resource</h3>
+            <p className="muted-copy mt-2 max-w-2xl">Browse active resources, select a time slot, and submit an approval request.</p>
+          </div>
         <Link to="/resources" className="btn-primary mt-5">Open resource catalog</Link>
+        </div>
       </div>
     </PageTransition>
   );
