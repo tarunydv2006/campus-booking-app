@@ -13,7 +13,6 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import resourceRoutes from './routes/resourceRoutes.js';
 import { ensureAdmin } from './utils/ensureAdmin.js';
 import { ensureResources } from './utils/ensureResources.js';
-import { verifyEmailTransport } from './utils/sendEmail.js';
 import User from './models/User.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -23,7 +22,6 @@ await connectDB();
 const admin = await ensureAdmin();
 if (admin) await ensureResources(admin._id);
 console.log(`Total users count: ${await User.countDocuments()}`);
-await verifyEmailTransport();
 
 const app = express();
 

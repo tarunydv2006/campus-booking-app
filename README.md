@@ -5,8 +5,8 @@ A complete MERN Stack campus booking platform for students, faculty, and admins 
 ## Tech Stack
 
 - Frontend: React, Vite, Tailwind CSS, React Router, Axios, Framer Motion, Lucide React
-- Backend: Node.js, Express.js, MongoDB Atlas, Mongoose, JWT, bcryptjs, Nodemailer
-- Auth: JWT role-based authentication with email OTP verification
+- Backend: Node.js, Express.js, MongoDB Atlas, Mongoose, JWT, bcryptjs
+- Auth: JWT role-based authentication
 
 ## Setup
 
@@ -29,11 +29,6 @@ MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/<database-name>?retr
 JWT_SECRET=replace_with_a_long_random_secret
 ADMIN_EMAIL=admin@campus.edu
 ADMIN_PASSWORD=replace_with_secure_admin_password
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your_email@example.com
-SMTP_PASS=your_app_password
-SMTP_FROM="Smart Campus Booking <your_email@example.com>"
 ```
 
 ### Frontend
@@ -50,17 +45,15 @@ The frontend runs on `http://localhost:5173` and the backend runs on `http://loc
 ## Auth Flow
 
 - Public signup creates only `student` or `faculty` accounts.
-- The signup page creates a student account and sends a 6-digit OTP.
-- Users must verify OTP before login.
-- Login returns clear errors for user not found, invalid password, and email not verified.
+- The signup page creates a student account immediately.
+- Login works with email and password.
+- Login returns clear errors for user not found and invalid password.
 - Admin cannot signup publicly.
 - The seed script creates or updates one admin using `ADMIN_EMAIL` and `ADMIN_PASSWORD` from `.env`.
 
 ## Main Auth Routes
 
 - `POST /api/auth/signup`
-- `POST /api/auth/verify-otp`
-- `POST /api/auth/resend-otp`
 - `POST /api/auth/login`
 - `GET /api/auth/me`
 
@@ -75,7 +68,7 @@ The frontend runs on `http://localhost:5173` and the backend runs on `http://loc
 - Admin resource create, edit, deactivate, delete
 - Admin booking approval/rejection with approval logs
 - User booking history
-- Notifications and optional email reminders
+- In-app notifications
 - Admin analytics dashboard
 - Premium responsive dark/light UI
 
@@ -91,4 +84,4 @@ cd server
 node --check server.js
 ```
 
-For full backend runtime verification, MongoDB Atlas credentials and SMTP credentials must be present in `server/.env`.
+For full backend runtime verification, MongoDB Atlas credentials must be present in `server/.env`.

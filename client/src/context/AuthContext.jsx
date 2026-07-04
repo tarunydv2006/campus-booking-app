@@ -6,9 +6,7 @@ const AuthContext = createContext(null);
 const authEndpoints = {
   me: 'auth/me',
   login: 'auth/login',
-  signup: 'auth/signup',
-  verifyOtp: 'auth/verify-otp',
-  resendOtp: 'auth/resend-otp'
+  signup: 'auth/signup'
 };
 
 export const AuthProvider = ({ children }) => {
@@ -49,16 +47,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const verifyOtp = async (payload) => {
-    const { data } = await api.post(authEndpoints.verifyOtp, payload);
-    return data;
-  };
-
-  const resendOtp = async (email) => {
-    const { data } = await api.post(authEndpoints.resendOtp, { email });
-    return data;
-  };
-
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -66,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const value = useMemo(
-    () => ({ user, loading, login, signup, verifyOtp, resendOtp, logout }),
+    () => ({ user, loading, login, signup, logout }),
     [user, loading]
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

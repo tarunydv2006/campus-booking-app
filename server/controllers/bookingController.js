@@ -2,7 +2,6 @@ import ApprovalLog from '../models/ApprovalLog.js';
 import Booking from '../models/Booking.js';
 import Notification from '../models/Notification.js';
 import Resource from '../models/Resource.js';
-import { sendEmail } from '../utils/sendEmail.js';
 
 const hasConflict = async (resource, startDate, endDate, excludeBookingId = null) => {
   const query = {
@@ -77,11 +76,6 @@ export const approveBooking = async (req, res) => {
     title: 'Booking approved',
     message: `${booking.resource.title} has been approved.`
   });
-  await sendEmail({
-    to: booking.user.email,
-    subject: 'Your campus booking was approved',
-    html: `<p>Hello ${booking.user.name}, your booking for <strong>${booking.resource.title}</strong> was approved.</p>`
-  });
 
   res.json(booking);
 };
@@ -98,11 +92,6 @@ export const rejectBooking = async (req, res) => {
     user: booking.user._id,
     title: 'Booking rejected',
     message: `${booking.resource.title} was rejected. Remark: ${booking.adminRemark}`
-  });
-  await sendEmail({
-    to: booking.user.email,
-    subject: 'Your campus booking was rejected',
-    html: `<p>Hello ${booking.user.name}, your booking for <strong>${booking.resource.title}</strong> was rejected.</p>`
   });
 
   res.json(booking);

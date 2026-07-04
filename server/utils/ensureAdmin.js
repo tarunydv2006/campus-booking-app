@@ -21,9 +21,6 @@ export const ensureAdmin = async () => {
     existingAdmin.password = adminPassword;
     existingAdmin.role = 'admin';
     existingAdmin.department = existingAdmin.department || 'Administration';
-    existingAdmin.isVerified = true;
-    existingAdmin.otpCode = null;
-    existingAdmin.otpExpiresAt = null;
     await existingAdmin.save();
     console.log(`Admin updated in ${User.collection.name}: ${existingAdmin.email}`);
     return existingAdmin;
@@ -34,8 +31,7 @@ export const ensureAdmin = async () => {
     email: adminEmail,
     password: adminPassword,
     role: 'admin',
-    department: 'Administration',
-    isVerified: true
+    department: 'Administration'
   });
 
   console.log(`Admin created in ${User.collection.name}: ${admin.email}`);

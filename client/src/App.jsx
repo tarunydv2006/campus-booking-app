@@ -16,7 +16,6 @@ import Profile from './pages/Profile';
 import ResourceDetails from './pages/ResourceDetails';
 import Resources from './pages/Resources';
 import Signup from './pages/Signup';
-import VerifyOtp from './pages/VerifyOtp';
 
 const DashboardRedirect = () => {
   const { user } = useAuth();
@@ -29,7 +28,6 @@ const App = () => (
     <Route path="/" element={<Home />} />
     <Route path="/login" element={<Login />} />
     <Route path="/signup" element={<Signup />} />
-    <Route path="/verify-otp" element={<VerifyOtp />} />
     <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
       <Route path="/dashboard" element={<DashboardRedirect />} />
       <Route path="/resources" element={<Resources />} />

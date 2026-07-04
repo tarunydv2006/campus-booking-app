@@ -18,16 +18,14 @@ const seed = async () => {
       email: 'student@campus.edu',
       password: 'student123',
       role: 'student',
-      department: 'CSE',
-      isVerified: true
+      department: 'CSE'
     },
     {
       name: 'Dr. Meera Faculty',
       email: 'faculty@campus.edu',
       password: 'faculty123',
       role: 'faculty',
-      department: 'ECE',
-      isVerified: true
+      department: 'ECE'
     }
   ];
 
