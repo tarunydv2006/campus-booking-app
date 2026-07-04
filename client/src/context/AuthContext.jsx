@@ -3,6 +3,14 @@ import api from '../api/axios';
 
 const AuthContext = createContext(null);
 
+const authEndpoints = {
+  me: 'auth/me',
+  login: 'auth/login',
+  signup: 'auth/signup',
+  verifyOtp: 'auth/verify-otp',
+  resendOtp: 'auth/resend-otp'
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user') || 'null'));
   const [loading, setLoading] = useState(false);
@@ -10,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    api.get('/auth/me')
+    api.get(authEndpoints.me)
       .then(({ data }) => {
         setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
@@ -21,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (payload) => {
     setLoading(true);
     try {
-      const { data } = await api.post('/auth/login', payload);
+      const { data } = await api.post(authEndpoints.login, payload);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
@@ -34,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (payload) => {
     setLoading(true);
     try {
-      const { data } = await api.post('/auth/signup', payload);
+      const { data } = await api.post(authEndpoints.signup, payload);
       return data;
     } finally {
       setLoading(false);
@@ -42,12 +50,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const verifyOtp = async (payload) => {
-    const { data } = await api.post('/auth/verify-otp', payload);
+    const { data } = await api.post(authEndpoints.verifyOtp, payload);
     return data;
   };
 
   const resendOtp = async (email) => {
-    const { data } = await api.post('/auth/resend-otp', { email });
+    const { data } = await api.post(authEndpoints.resendOtp, { email });
     return data;
   };
 
