@@ -15,6 +15,7 @@ const serializeUser = (user) => ({
 const createOtp = () => String(Math.floor(100000 + Math.random() * 900000));
 
 const sendOtpEmail = async (user) => {
+  console.log(`Sending OTP email: userId=${user._id}, email=${user.email}`);
   await sendEmail({
     to: user.email,
     subject: 'Verify your Smart Campus Booking email',
@@ -26,9 +27,33 @@ const sendOtpEmail = async (user) => {
   });
 };
 
+const logSmtpError = (label, error) => {
+  console.error(label, {
+    name: error.name,
+    message: error.message,
+    code: error.code,
+    command: error.command,
+    responseCode: error.responseCode,
+    response: error.response,
+    stack: error.stack
+  });
+};
+
+const getEmailErrorPayload = (error, fallbackMessage) => ({
+  message: fallbackMessage,
+  emailError: {
+    message: error.message,
+    code: error.code,
+    command: error.command,
+    responseCode: error.responseCode,
+    response: error.response
+  }
+});
+
 const setOtp = (user) => {
   user.otpCode = createOtp();
   user.otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+  console.log(`OTP generated: email=${user.email}, expiresAt=${user.otpExpiresAt.toISOString()}`);
 };
 
 export const signup = async (req, res) => {
@@ -50,10 +75,6 @@ export const signup = async (req, res) => {
     if (existing?.isVerified) return res.status(409).json({ message: 'Email is already registered' });
     if (existing?.role === 'admin') return res.status(403).json({ message: 'Admin accounts cannot signup publicly' });
 
-    const otpCode = createOtp();
-    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
-    console.log(`OTP generated for ${normalizedEmail}`);
-
     let user;
     if (existing) {
       existing.name = name;
@@ -62,36 +83,41 @@ export const signup = async (req, res) => {
       existing.role = role;
       existing.department = department || 'General';
       existing.isVerified = false;
-      existing.otpCode = otpCode;
-      existing.otpExpiresAt = otpExpiresAt;
+      setOtp(existing);
       user = await existing.save();
+      console.log(`User created: existing unverified account reset, userId=${user._id}, email=${user.email}`);
     } else {
-      user = await User.create({
+      user = new User({
           name,
           email: normalizedEmail,
           password,
           role,
           department: department || 'General',
-          isVerified: false,
-          otpCode,
-          otpExpiresAt
+          isVerified: false
         });
+      setOtp(user);
+      user = await user.save();
+      console.log(`User created: new account saved, userId=${user._id}, email=${user.email}`);
     }
 
-    console.log(`User saved: ${user._id} ${user.email}`);
+    console.log(`User created/saved successfully: userId=${user._id}, email=${user.email}, isVerified=${user.isVerified}`);
 
     try {
+      console.log(`Sending OTP email for registration: userId=${user._id}, email=${user.email}`);
       await sendOtpEmail(user);
-      console.log(`OTP email sent successfully to ${normalizedEmail}`);
+      console.log(`OTP email sent: userId=${user._id}, email=${normalizedEmail}`);
       return res.status(201).json({
         message: 'Signup successful. Please verify the OTP sent to your email.',
         email: user.email,
         emailSent: true
       });
     } catch (emailError) {
-      console.error('OTP email send failed:', emailError);
+      logSmtpError('Exact SMTP error while sending registration OTP:', emailError);
       return res.status(502).json({
-        message: 'Account created but OTP email could not be sent. Please check SMTP settings and use resend OTP.',
+        ...getEmailErrorPayload(
+          emailError,
+          'Account created, but the OTP email could not be sent. Please verify SMTP credentials, Gmail App Password, and sender configuration.'
+        ),
         email: user.email,
         emailSent: false
       });
@@ -133,13 +159,18 @@ export const resendOtp = async (req, res) => {
 
   setOtp(user);
   await user.save();
+  console.log(`OTP saved for resend: userId=${user._id}, email=${user.email}`);
   try {
+    console.log(`Sending OTP email for resend: userId=${user._id}, email=${user.email}`);
     await sendOtpEmail(user);
     console.log(`OTP email resent successfully to ${normalizedEmail}`);
     return res.json({ message: 'A new OTP has been sent to your email.' });
   } catch (error) {
-    console.error('Resend OTP email failed:', error);
-    return res.status(502).json({ message: 'OTP was generated but email could not be sent. Please check SMTP settings.' });
+    logSmtpError('Exact SMTP error while resending OTP:', error);
+    return res.status(502).json(getEmailErrorPayload(
+      error,
+      'OTP was generated, but the email could not be sent. Please verify SMTP credentials, Gmail App Password, and sender configuration.'
+    ));
   }
 };
 

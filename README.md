@@ -33,6 +33,7 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your_email@example.com
 SMTP_PASS=your_app_password
+SMTP_FROM="Smart Campus Booking <your_email@example.com>"
 ```
 
 ### Frontend
