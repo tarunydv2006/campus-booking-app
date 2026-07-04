@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api/axios';
+import PageTransition from '../components/PageTransition';
 
 const BookingForm = () => {
   const { id } = useParams();
@@ -31,7 +32,7 @@ const BookingForm = () => {
   };
 
   return (
-    <section className="page">
+    <PageTransition>
       <form onSubmit={submit} className="glass mx-auto max-w-2xl rounded-lg p-6">
         <p className="font-bold text-teal-500">{resource?.category}</p>
         <h2 className="mt-2 text-3xl font-black">Book {resource?.title || 'resource'}</h2>
@@ -49,7 +50,7 @@ const BookingForm = () => {
           <button className="btn-primary w-full">Submit booking request</button>
         </div>
       </form>
-    </section>
+    </PageTransition>
   );
 };
 

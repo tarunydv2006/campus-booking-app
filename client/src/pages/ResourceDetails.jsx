@@ -2,6 +2,7 @@ import { CalendarPlus, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../api/axios';
+import PageTransition from '../components/PageTransition';
 
 const ResourceDetails = () => {
   const { id } = useParams();
@@ -11,10 +12,10 @@ const ResourceDetails = () => {
     api.get(`/resources/${id}`).then(({ data }) => setResource(data));
   }, [id]);
 
-  if (!resource) return <section className="page"><div className="glass h-96 animate-pulse rounded-lg" /></section>;
+  if (!resource) return <PageTransition><div className="glass skeleton-shimmer h-96 rounded-lg" /></PageTransition>;
 
   return (
-    <section className="page">
+    <PageTransition>
       <div className="glass overflow-hidden rounded-lg">
         <img src={resource.image} alt={resource.title} className="h-80 w-full object-cover" />
         <div className="grid gap-8 p-6 lg:grid-cols-[1fr_320px]">
@@ -36,7 +37,7 @@ const ResourceDetails = () => {
           </div>
         </div>
       </div>
-    </section>
+    </PageTransition>
   );
 };
 

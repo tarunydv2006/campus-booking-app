@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
@@ -23,25 +24,31 @@ const DashboardRedirect = () => {
   return <Dashboard />;
 };
 
-const App = () => (
-  <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/signup" element={<Signup />} />
-    <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-      <Route path="/dashboard" element={<DashboardRedirect />} />
-      <Route path="/resources" element={<Resources />} />
-      <Route path="/resources/:id" element={<ResourceDetails />} />
-      <Route path="/book/:id" element={<BookingForm />} />
-      <Route path="/my-bookings" element={<MyBookings />} />
-      <Route path="/notifications" element={<Notifications />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/admin/resources" element={<ProtectedRoute roles={['admin']}><AdminResources /></ProtectedRoute>} />
-      <Route path="/admin/bookings" element={<ProtectedRoute roles={['admin']}><AdminBookings /></ProtectedRoute>} />
-    </Route>
-    <Route path="/404" element={<NotFound />} />
-    <Route path="*" element={<Navigate to="/404" replace />} />
-  </Routes>
-);
+const App = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route path="/dashboard" element={<DashboardRedirect />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/resources/:id" element={<ResourceDetails />} />
+          <Route path="/book/:id" element={<BookingForm />} />
+          <Route path="/my-bookings" element={<MyBookings />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/admin/resources" element={<ProtectedRoute roles={['admin']}><AdminResources /></ProtectedRoute>} />
+          <Route path="/admin/bookings" element={<ProtectedRoute roles={['admin']}><AdminBookings /></ProtectedRoute>} />
+        </Route>
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
 
 export default App;

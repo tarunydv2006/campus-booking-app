@@ -11,6 +11,7 @@ import {
   User,
   X
 } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -33,6 +34,7 @@ const Layout = () => {
   const { user, logout } = useAuth();
   const { dark, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
   const navigate = useNavigate();
 
   const signOut = () => {
@@ -41,7 +43,7 @@ const Layout = () => {
   };
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition ${
+    `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition duration-200 hover:translate-x-0.5 ${
       isActive
         ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
         : 'text-slate-600 hover:bg-slate-900/5 dark:text-slate-300 dark:hover:bg-white/10'
@@ -72,7 +74,29 @@ const Layout = () => {
     <div className="app-bg min-h-screen">
       <div className="flex min-h-screen">
         <div className="hidden lg:block">{sidebar}</div>
-        {open && <div className="fixed inset-0 z-50 lg:hidden">{sidebar}</div>}
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              className="fixed inset-0 z-50 bg-slate-950/25 lg:hidden"
+              initial={reduceMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={reduceMotion ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              onClick={() => setOpen(false)}
+            >
+              <motion.div
+                initial={reduceMotion ? false : { x: -18, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={reduceMotion ? undefined : { x: -18, opacity: 0 }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                onClick={(event) => event.stopPropagation()}
+                className="h-full w-72"
+              >
+                {sidebar}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <main className="min-w-0 flex-1">
           <header className="sticky top-0 z-40 border-b border-slate-200/60 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-[#070a12]/70">
             <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">

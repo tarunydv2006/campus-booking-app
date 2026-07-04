@@ -1,10 +1,11 @@
 import { Mail, Shield, University } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 import { useAuth } from '../context/AuthContext';
 
 const Profile = () => {
   const { user } = useAuth();
   return (
-    <section className="page">
+    <PageTransition>
       <div className="glass max-w-3xl rounded-lg p-8">
         <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-950 text-3xl font-black text-white dark:bg-white dark:text-slate-950">
           {user.name.charAt(0)}
@@ -16,7 +17,7 @@ const Profile = () => {
           <div className="rounded-lg bg-white/60 p-4 dark:bg-white/5"><University className="mb-3 h-5 w-5 text-teal-500" /><p className="font-bold">{user.department}</p></div>
         </div>
       </div>
-    </section>
+    </PageTransition>
   );
 };
 

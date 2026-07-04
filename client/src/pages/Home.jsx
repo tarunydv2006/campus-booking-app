@@ -1,12 +1,14 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, CalendarCheck, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { quickTransition } from '../utils/motion';
 
 const Home = () => {
   const { user } = useAuth();
   const { dark, toggleTheme } = useTheme();
+  const reduceMotion = useReducedMotion();
 
   return (
     <main className="app-bg min-h-screen overflow-hidden px-4 py-5 dark:text-white">
@@ -18,7 +20,7 @@ const Home = () => {
         </div>
       </nav>
       <section className="mx-auto grid min-h-[calc(100vh-90px)] max-w-7xl items-center gap-10 py-10 lg:grid-cols-[1fr_0.9fr]">
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={quickTransition}>
           <h1 className="max-w-4xl text-5xl font-black leading-tight sm:text-7xl">
             Smart Campus Resource Booking System
           </h1>
@@ -44,14 +46,14 @@ const Home = () => {
             ))}
           </div>
         </motion.div>
-        <motion.div initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} className="relative min-h-[480px]">
-          <div className="absolute inset-8 rotate-3 rounded-[2rem] bg-slate-950 shadow-2xl dark:bg-white/10" />
+        <motion.div initial={reduceMotion ? false : { opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={quickTransition} className="relative min-h-[480px]">
+          <div className="absolute inset-8 rotate-3 rounded-[2rem] bg-slate-950 shadow-xl dark:bg-white/10" />
           <div className="glass absolute inset-0 rounded-[2rem] p-6">
             <div className="grid h-full grid-rows-[1fr_auto] gap-5">
               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-200 via-white to-indigo-200 p-6 dark:from-teal-900 dark:via-slate-900 dark:to-indigo-950">
-                <div className="absolute bottom-10 left-12 h-36 w-60 -skew-y-6 rounded-xl bg-white shadow-2xl dark:bg-slate-800" />
+                <div className="absolute bottom-10 left-12 h-36 w-60 -skew-y-6 rounded-xl bg-white shadow-lg dark:bg-slate-800" />
                 <div className="absolute bottom-24 left-24 h-28 w-44 -skew-y-6 rounded-xl bg-teal-500 shadow-xl" />
-                <div className="absolute bottom-32 right-16 h-48 w-36 -skew-y-6 rounded-xl bg-slate-950 shadow-2xl dark:bg-white" />
+                <div className="absolute bottom-32 right-16 h-48 w-36 -skew-y-6 rounded-xl bg-slate-950 shadow-xl dark:bg-white" />
                 <div className="absolute bottom-16 right-28 h-16 w-16 rounded-full bg-rose-400 shadow-xl" />
                 <div className="absolute left-8 top-8 rounded-xl bg-white/80 p-4 shadow-xl dark:bg-slate-950/80">
                   <p className="text-xs font-bold uppercase text-teal-500">Live availability</p>

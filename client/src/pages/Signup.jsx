@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getApiErrorMessage } from '../api/axios';
+import PageTransition from '../components/PageTransition';
 import { useAuth } from '../context/AuthContext';
 
 const Signup = () => {
@@ -21,7 +22,7 @@ const Signup = () => {
   };
 
   return (
-    <main className="app-bg grid min-h-screen place-items-center px-4 dark:text-white">
+    <PageTransition className="app-bg grid min-h-screen place-items-center px-4 dark:text-white">
       <form onSubmit={submit} className="glass w-full max-w-lg rounded-lg p-8">
         <h1 className="text-3xl font-black">Create your account</h1>
         {error && <p className="mt-4 rounded-lg bg-rose-500/10 p-3 text-sm text-rose-500">{error}</p>}
@@ -33,7 +34,7 @@ const Signup = () => {
         </div>
         <p className="mt-5 text-center text-sm text-slate-500">Already registered? <Link className="font-bold text-teal-500" to="/login">Login</Link></p>
       </form>
-    </main>
+    </PageTransition>
   );
 };
 

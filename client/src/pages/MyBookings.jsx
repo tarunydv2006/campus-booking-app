@@ -1,23 +1,28 @@
+import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import AnimatedList from '../components/AnimatedList';
 import EmptyState from '../components/EmptyState';
+import PageTransition from '../components/PageTransition';
 import StatusBadge from '../components/StatusBadge';
 import { formatDateTime } from '../utils/constants';
+import { cardHover, itemVariants, quickTransition } from '../utils/motion';
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     api.get('/bookings/my').then(({ data }) => setBookings(data));
   }, []);
 
   return (
-    <section className="page">
+    <PageTransition>
       <h2 className="mb-6 text-3xl font-black">My booking history</h2>
       {bookings.length ? (
-        <div className="space-y-3">
+        <AnimatedList className="space-y-3">
           {bookings.map((booking) => (
-            <div key={booking._id} className="glass rounded-lg p-5">
+            <motion.div key={booking._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="glass rounded-lg p-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h3 className="text-lg font-black">{booking.resource?.title}</h3>
@@ -27,11 +32,11 @@ const MyBookings = () => {
                 </div>
                 <StatusBadge status={booking.status} />
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </AnimatedList>
       ) : <EmptyState title="No bookings yet" text="Your reservations will appear here." />}
-    </section>
+    </PageTransition>
   );
 };
 

@@ -1,8 +1,12 @@
+import { motion, useReducedMotion } from 'framer-motion';
 import { Pencil, Plus, Power, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import AnimatedList from '../components/AnimatedList';
 import EmptyState from '../components/EmptyState';
+import PageTransition from '../components/PageTransition';
 import { categories } from '../utils/constants';
+import { cardHover, itemVariants, quickTransition } from '../utils/motion';
 
 const blank = {
   title: '',
@@ -17,6 +21,7 @@ const AdminResources = () => {
   const [resources, setResources] = useState([]);
   const [form, setForm] = useState(blank);
   const [editingId, setEditingId] = useState(null);
+  const reduceMotion = useReducedMotion();
 
   const load = () => api.get('/resources', { params: { active: 'all' } }).then(({ data }) => setResources(data));
   useEffect(() => { load(); }, []);
@@ -42,7 +47,7 @@ const AdminResources = () => {
   };
 
   return (
-    <section className="page">
+    <PageTransition>
       <div className="mb-6">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-teal-500">Admin</p>
         <h2 className="mt-2 text-3xl font-black">Manage resources</h2>
@@ -62,9 +67,9 @@ const AdminResources = () => {
             <button className="btn-primary w-full">{editingId ? 'Save changes' : 'Create resource'}</button>
           </div>
         </form>
-        <div className="space-y-3">
+        <AnimatedList className="space-y-3">
           {resources.length ? resources.map((resource) => (
-            <div key={resource._id} className="glass rounded-lg p-4">
+            <motion.div key={resource._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="glass rounded-lg p-4">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex gap-4">
                   <img src={resource.image} alt={resource.title} className="h-20 w-24 rounded-lg object-cover" />
@@ -82,11 +87,11 @@ const AdminResources = () => {
                   <button onClick={async () => { await api.delete(`/resources/${resource._id}`); load(); }} className="btn-secondary px-3 text-rose-500"><Trash2 className="h-4 w-4" /></button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )) : <EmptyState title="No resources" />}
-        </div>
+        </AnimatedList>
       </div>
-    </section>
+    </PageTransition>
   );
 };
 

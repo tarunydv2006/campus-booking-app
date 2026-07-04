@@ -1,13 +1,18 @@
+import { motion, useReducedMotion } from 'framer-motion';
 import { Check, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import AnimatedList from '../components/AnimatedList';
 import EmptyState from '../components/EmptyState';
+import PageTransition from '../components/PageTransition';
 import StatusBadge from '../components/StatusBadge';
 import { formatDateTime } from '../utils/constants';
+import { cardHover, itemVariants, quickTransition } from '../utils/motion';
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [remarks, setRemarks] = useState({});
+  const reduceMotion = useReducedMotion();
 
   const load = () => api.get('/bookings/all').then(({ data }) => setBookings(data));
   useEffect(() => { load(); }, []);
@@ -18,12 +23,12 @@ const AdminBookings = () => {
   };
 
   return (
-    <section className="page">
+    <PageTransition>
       <h2 className="mb-6 text-3xl font-black">Manage bookings</h2>
       {bookings.length ? (
-        <div className="space-y-3">
+        <AnimatedList className="space-y-3">
           {bookings.map((booking) => (
-            <div key={booking._id} className="glass rounded-lg p-5">
+            <motion.div key={booking._id} variants={reduceMotion ? undefined : itemVariants} whileHover={reduceMotion ? undefined : cardHover} transition={quickTransition} className="glass rounded-lg p-5">
               <div className="grid gap-4 lg:grid-cols-[1fr_280px] lg:items-center">
                 <div>
                   <div className="mb-2 flex flex-wrap items-center gap-3">
@@ -42,11 +47,11 @@ const AdminBookings = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </AnimatedList>
       ) : <EmptyState title="No bookings yet" />}
-    </section>
+    </PageTransition>
   );
 };
 

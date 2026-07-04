@@ -1,7 +1,9 @@
 import { Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import api from '../api/axios';
+import AnimatedList from '../components/AnimatedList';
 import EmptyState from '../components/EmptyState';
+import PageTransition from '../components/PageTransition';
 import ResourceCard from '../components/ResourceCard';
 import Skeleton from '../components/Skeleton';
 import { categories } from '../utils/constants';
@@ -17,7 +19,7 @@ const Resources = () => {
   }, [filters]);
 
   return (
-    <section className="page">
+    <PageTransition>
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-teal-500">Catalog</p>
@@ -35,11 +37,11 @@ const Resources = () => {
         </div>
       </div>
       {loading ? <Skeleton /> : resources.length ? (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <AnimatedList className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {resources.map((resource) => <ResourceCard key={resource._id} resource={resource} />)}
-        </div>
+        </AnimatedList>
       ) : <EmptyState title="No resources found" text="Try a different search or category." />}
-    </section>
+    </PageTransition>
   );
 };
 
