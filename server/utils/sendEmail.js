@@ -21,8 +21,8 @@ const formatSmtpError = (error) => ({
 });
 
 const getSmtpConfig = () => {
-  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const smtpPort = Number(process.env.SMTP_PORT || 587);
+  const smtpHost = 'smtp.gmail.com';
+  const smtpPort = 465;
   const smtpUser = process.env.SMTP_USER;
   const rawSmtpPass = process.env.SMTP_PASS;
   const smtpPass = normalizeAppPassword(rawSmtpPass);
@@ -30,9 +30,6 @@ const getSmtpConfig = () => {
 
   if (!smtpUser) missingCredentials.push('SMTP_USER');
   if (!rawSmtpPass) missingCredentials.push('SMTP_PASS');
-  if (!Number.isInteger(smtpPort) || smtpPort <= 0) {
-    throw new Error(`Invalid SMTP_PORT "${process.env.SMTP_PORT}". Use 587 for STARTTLS or 465 for SSL.`);
-  }
 
   if (missingCredentials.length > 0) {
     throw new Error(`Missing SMTP configuration: ${missingCredentials.join(', ')}`);
@@ -48,11 +45,7 @@ const getSmtpConfig = () => {
   return {
     host: smtpHost,
     port: smtpPort,
-    secure: false,
-    requireTLS: true,
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 60000,
+    secure: true,
     user: smtpUser,
     pass: smtpPass
   };
@@ -80,10 +73,6 @@ const createEmailTransporter = () => {
     host: config.host,
     port: config.port,
     secure: config.secure,
-    requireTLS: config.requireTLS,
-    connectionTimeout: config.connectionTimeout,
-    greetingTimeout: config.greetingTimeout,
-    socketTimeout: config.socketTimeout,
     auth: {
       user: config.user,
       pass: config.pass
@@ -114,6 +103,10 @@ export const sendEmail = async ({ to, subject, html }) => {
   const { config, transporter } = createEmailTransporter();
 
   try {
+    console.log(`Nodemailer verify before send: host=${config.host}, port=${config.port}, secure=${config.secure}, user=${config.user}`);
+    await transporter.verify();
+    console.log('Nodemailer verify before send succeeded');
+
     console.log(`Nodemailer sendMail starting: to=${to}, host=${config.host}, port=${config.port}, secure=${config.secure}, user=${config.user}, from=${getMailFrom(config)}`);
     const info = await transporter.sendMail({
       from: getMailFrom(config),
