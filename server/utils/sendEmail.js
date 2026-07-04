@@ -48,7 +48,11 @@ const getSmtpConfig = () => {
   return {
     host: smtpHost,
     port: smtpPort,
-    secure: smtpPort === 465,
+    secure: false,
+    requireTLS: true,
+    connectionTimeout: 30000,
+    greetingTimeout: 30000,
+    socketTimeout: 60000,
     user: smtpUser,
     pass: smtpPass
   };
@@ -76,6 +80,10 @@ const createEmailTransporter = () => {
     host: config.host,
     port: config.port,
     secure: config.secure,
+    requireTLS: config.requireTLS,
+    connectionTimeout: config.connectionTimeout,
+    greetingTimeout: config.greetingTimeout,
+    socketTimeout: config.socketTimeout,
     auth: {
       user: config.user,
       pass: config.pass
